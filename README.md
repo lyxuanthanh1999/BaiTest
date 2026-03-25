@@ -165,7 +165,7 @@ Make sure you have the following installed:
 ### Clone the repository\*\*
 
 ```bash
-git clone https://github.com/linhnguyen-gt/new-react-native-zustand-react-query
+git clone https://github.com/lyxuanthanh1999/react-native-zustand-react-query
 cd new-react-native-zustand-react-query
 ```
 
