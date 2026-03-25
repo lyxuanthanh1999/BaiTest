@@ -1,0 +1,56 @@
+module.exports = {
+    preset: 'react-native',
+    transform: {
+        '^.+.(js|jsx|ts|tsx)$': 'babel-jest',
+    },
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    setupFiles: ['<rootDir>/jest.setup.js'],
+    transformIgnorePatterns: [
+        'node_modules/(?!(react-native' +
+            '|@react-native' +
+            '|@react-navigation' +
+            '|react-native-vector-icons' +
+            '|@gluestack-ui' +
+            '|react-native-css-interop' +
+            '|react-redux' +
+            '|@react-native-aria' +
+            '|react-native-config' +
+            '|@react-native-async-storage' +
+            '|reactotron-react-native' +
+            '|reactotron-redux' +
+            '|reactotron-redux-saga' +
+            '|reactotron-core-client' +
+            '|@gluestack-ui/overlay' +
+            '|@gluestack-ui/button' +
+            '|@gluestack-ui/toast' +
+            '|@gluestack-ui/image' +
+            '|@gluestack-ui/icon' +
+            '|@gluestack-ui/nativewind-utils' +
+            '|@legendapp/motion' +
+            '|nativewind' +
+            '|expo-constants' +
+            '|expo-secure-store' +
+            '|react-native-get-random-values' +
+            '|react-native-url-polyfill' +
+            '|aes-js' +
+            '|react-native-gesture-handler' +
+            '|react-native-reanimated' +
+            '|react-native-svg' +
+            '|react-native-safe-area-context' +
+            '|react-native-screens' +
+            ')/)',
+    ],
+    moduleNameMapper: {
+        '^@/data/services$': '<rootDir>/__mocks__/@/data/services.js',
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+            '<rootDir>/__mocks__/fileMock.js',
+        '\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js',
+        '^@react-native-vector-icons/(.*)$': '<rootDir>/__mocks__/react-native-vector-icons.js',
+    },
+    setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
+    testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.history/', '<rootDir>/.opencode/'],
+    globals: {
+        __DEV__: true,
+    },
+};
