@@ -2,6 +2,11 @@
 
 Ứng dụng quản lý tài khoản và mật khẩu full-stack.
 
+## 📺 Demo Video
+
+https://github.com/lyxuanthanh1999/BaiTest/raw/main/VideoDemo/demo.mov
+
+
 | Layer | Technology |
 |-------|-----------|
 | **Frontend** | React Native (Expo, Zustand, React Query) |
