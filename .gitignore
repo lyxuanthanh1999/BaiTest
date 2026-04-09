@@ -144,3 +144,10 @@ GEMINI.md
 
 # Backend build output
 backend/dist/
+
+# Agent & CI files (not for GitHub)
+.agent/
+.shared/
+docs/
+plans/
+GEMINI.md

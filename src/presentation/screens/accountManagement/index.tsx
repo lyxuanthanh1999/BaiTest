@@ -171,47 +171,49 @@ const AccountFormModal = React.memo<{
                     </VStack>
 
                     <Box flexDirection="row" gap={12} marginTop={24}>
-                        <MyTouchable onPress={onClose}>
-                            <Box
-                                flex={1}
-                                padding={14}
-                                borderRadius={14}
-                                backgroundColor="#f1f5f9"
-                                alignItems="center"
-                            >
-                                <Text size="md" fontWeight="bold" color="#64748b">
-                                    Cancel
-                                </Text>
-                            </Box>
-                        </MyTouchable>
-                        <MyTouchable
-                            onPress={() => onSubmit(form)}
-                            disabled={isLoading || !form.username || (!isEditing && !form.password)}
-                        >
-                            <Box
-                                flex={1}
-                                padding={14}
-                                borderRadius={14}
-                                backgroundColor={
-                                    isLoading || !form.username || (!isEditing && !form.password)
-                                        ? '#94a3b8'
-                                        : Colors.primaryColor
-                                }
-                                alignItems="center"
-                                flexDirection="row"
-                                justifyContent="center"
-                            >
-                                {isLoading && <ActivityIndicator color="white" size="small" />}
-                                <Text
-                                    size="md"
-                                    fontWeight="bold"
-                                    color="white"
-                                    marginLeft={isLoading ? 8 : 0}
+                        <Box flex={1}>
+                            <MyTouchable onPress={onClose}>
+                                <Box
+                                    padding={14}
+                                    borderRadius={14}
+                                    backgroundColor="#f1f5f9"
+                                    alignItems="center"
                                 >
-                                    {isEditing ? 'Update' : 'Create'}
-                                </Text>
-                            </Box>
-                        </MyTouchable>
+                                    <Text size="md" fontWeight="bold" color="#64748b">
+                                        Cancel
+                                    </Text>
+                                </Box>
+                            </MyTouchable>
+                        </Box>
+                        <Box flex={1}>
+                            <MyTouchable
+                                onPress={() => onSubmit(form)}
+                                disabled={isLoading || !form.username || (!isEditing && !form.password)}
+                            >
+                                <Box
+                                    padding={14}
+                                    borderRadius={14}
+                                    backgroundColor={
+                                        isLoading || !form.username || (!isEditing && !form.password)
+                                            ? '#94a3b8'
+                                            : Colors.primaryColor
+                                    }
+                                    alignItems="center"
+                                    flexDirection="row"
+                                    justifyContent="center"
+                                >
+                                    {isLoading && <ActivityIndicator color="white" size="small" />}
+                                    <Text
+                                        size="md"
+                                        fontWeight="bold"
+                                        color="white"
+                                        marginLeft={isLoading ? 8 : 0}
+                                    >
+                                        {isEditing ? 'Update' : 'Create'}
+                                    </Text>
+                                </Box>
+                            </MyTouchable>
+                        </Box>
                     </Box>
                 </Box>
             </Box>
