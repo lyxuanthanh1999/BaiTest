@@ -1,7 +1,2 @@
-import responseQueries from './responseQueries';
-
-const queries = {
-    responseQueries,
-};
-
-export default queries;
+export { default as authQueries } from './authQueries';
+export { default as accountQueries } from './accountQueries';

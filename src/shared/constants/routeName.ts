@@ -1,8 +1,6 @@
 const RouteName = {
     Login: 'Login',
-    SignUp: 'SignUp',
-    Main: 'Main',
-    Counter: 'Counter',
+    AccountManagement: 'AccountManagement',
 } as const;
 
 export default RouteName;

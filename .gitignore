@@ -139,4 +139,8 @@ plans/
 .kiro/
 KIRO.md
 .shared/
-.opencode/
+.agent/
+GEMINI.md
+
+# Backend build output
+backend/dist/

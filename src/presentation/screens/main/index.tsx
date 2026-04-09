@@ -4,18 +4,21 @@ import { StatusBar, useColorScheme } from 'react-native';
 import { RootNavigator } from '@/data/services';
 import authQueries from '@/data/queries/authQueries';
 
-import { useResponse } from '@/presentation/hooks';
+// import { useResponse } from '@/presentation/hooks';
 
 import { Loading } from '@/presentation/components/loading';
 import { MyTouchable } from '@/presentation/components/touchable';
 import { Box, ScrollView, Text, VStack } from '@/presentation/components/ui';
 import { RouteName } from '@/shared/constants';
 import { appConfig } from '@/shared/config/app-config';
+import productQueries from '@/data/queries/productQueries';
 
 const ItemSeparator = () => <Box className="h-4" />;
 
 const MainPage = () => {
-    const { response, isLoading, error } = useResponse();
+    // const { response, isLoading, error } = useResponse();
+    const { data, isLoading, error, refetch } = productQueries.useProducts();
+    console.log('data', data);
     const isDarkMode = useColorScheme() === 'dark';
     const signOutMutation = authQueries.useSignOut();
 
@@ -122,9 +125,11 @@ const MainPage = () => {
                                     </Text>
                                 </Box>
                                 <Box className="ml-3">
-                                    <Text size="md" fontWeight="bold" className="text-slate-800">
-                                        Environment
-                                    </Text>
+                                    <MyTouchable onPress={() => handleSignOut()}>
+                                        <Text size="md" fontWeight="bold" className="text-slate-800">
+                                            Environment
+                                        </Text>
+                                    </MyTouchable>
                                     <Text size="lg" className="mt-1 font-bold text-indigo-400">
                                         {appConfig.APP_FLAVOR}
                                     </Text>
@@ -157,7 +162,7 @@ const MainPage = () => {
                                 Posts Data
                             </Text>
                             <Text size="md" className="mt-1 text-slate-500">
-                                {response?.length || 0} posts available
+                                {data?.length || 0} posts available
                             </Text>
                         </Box>
                     </Box>
@@ -173,8 +178,8 @@ const MainPage = () => {
                         </Text>
                     </Box>
 
-                    {response?.length > 0
-                        ? response.map((item) => (
+                    {(data?.length ?? 0) > 0
+                        ? data?.map((item) => (
                               <Box key={item.id} className="px-6">
                                   {renderItem({ item })}
                                   <ItemSeparator />

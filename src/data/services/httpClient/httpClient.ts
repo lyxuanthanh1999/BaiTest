@@ -7,7 +7,7 @@ import { RequestInterceptor } from './services/requestInterceptor';
 import { TokenService } from './services/tokenService';
 
 const DEFAULT_API_CONFIG = {
-    baseURL: 'https://jsonplaceholder.typicode.com',
+    baseURL: 'http://localhost:3000',
     timeout: 30000,
     headers: {
         'X-Content-Type-Options': 'nosniff',

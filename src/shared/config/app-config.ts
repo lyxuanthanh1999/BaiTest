@@ -21,13 +21,10 @@ type NativeModulesWithConfig = typeof NativeModules & {
 
 const DEFAULT_CONFIG: BaseAppConfig = {
     APP_FLAVOR: 'development',
-    APP_NAME: 'NewReactNativeZustandRNQ',
+    APP_NAME: 'BaiTest',
     VERSION_CODE: '1',
     VERSION_NAME: '1.0.0',
     API_URL: 'http://localhost:3000',
-    SUPABASE_URL: '',
-    SUPABASE_ANON_KEY: '',
-    SUPABASE_SERVICE_ROLE_KEY: '',
 };
 
 const ENV_KEYS: AppConfigKey[] = [
@@ -36,9 +33,6 @@ const ENV_KEYS: AppConfigKey[] = [
     'VERSION_CODE',
     'VERSION_NAME',
     'API_URL',
-    'SUPABASE_URL',
-    'SUPABASE_ANON_KEY',
-    'SUPABASE_SERVICE_ROLE_KEY',
 ];
 
 const isAppFlavor = (value: string): value is BaseAppConfig['APP_FLAVOR'] =>

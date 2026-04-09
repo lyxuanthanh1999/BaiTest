@@ -11,12 +11,11 @@ import { ControlledInput } from '@/presentation/components/input';
 import { MyTouchable } from '@/presentation/components/touchable';
 import { Box, ScrollView, Text, VStack } from '@/presentation/components/ui';
 import { Colors, RouteName } from '@/shared/constants';
-import { appConfig } from '@/shared/config/app-config';
 import { loginSchema } from '@/shared/validation/schemas';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-const RNLogo = React.memo(() => (
+const AppLogo = React.memo(() => (
     <Box
         width={120}
         height={120}
@@ -44,84 +43,19 @@ const RNLogo = React.memo(() => (
                 <Text
                     color="white"
                     fontWeight="bold"
-                    fontSize={42}
+                    fontSize={36}
                     style={{
                         includeFontPadding: false,
-                        lineHeight: 50,
+                        lineHeight: 42,
                     }}>
-                    RN
+                    🔐
                 </Text>
             </Box>
         </Box>
     </Box>
 ));
 
-RNLogo.displayName = 'RNLogo';
-
-const AppInfoBadge = React.memo(() => (
-    <VStack space="xs" alignItems="center" marginTop={16}>
-        <Text size="3xl" fontWeight="bold" color="#0f172a">
-            Welcome Back
-        </Text>
-        <Box
-            flexDirection="row"
-            alignItems="center"
-            paddingHorizontal={10}
-            paddingVertical={4}
-            backgroundColor="#e2e8f0"
-            borderRadius={999}>
-            <Text size="sm" color="#334155" fontWeight="bold">
-                Flavor:
-            </Text>
-            <Text size="sm" color="#0f172a" marginLeft={6}>
-                {appConfig.APP_FLAVOR}
-            </Text>
-        </Box>
-        <VStack space="xs" marginTop={8}>
-            <Box flexDirection="row" justifyContent="center">
-                <Text size="sm" color="#64748b" marginRight={6}>
-                    App Name:
-                </Text>
-                <Text size="sm" color="#0f172a" fontWeight="medium">
-                    {appConfig.APP_NAME}
-                </Text>
-            </Box>
-            <Box flexDirection="row" justifyContent="center">
-                <Text size="sm" color="#64748b" marginRight={6}>
-                    Version:
-                </Text>
-                <Text size="sm" color="#0f172a" fontWeight="medium">
-                    {appConfig.VERSION_NAME}
-                </Text>
-            </Box>
-            <Box flexDirection="row" justifyContent="center">
-                <Text size="sm" color="#64748b" marginRight={6}>
-                    Build:
-                </Text>
-                <Text size="sm" color="#0f172a" fontWeight="medium">
-                    {appConfig.VERSION_CODE}
-                </Text>
-            </Box>
-        </VStack>
-    </VStack>
-));
-
-AppInfoBadge.displayName = 'AppInfoBadge';
-
-const SignUpLink = React.memo(() => (
-    <Box flexDirection="row" justifyContent="center" marginTop={16}>
-        <Text color="#64748b" marginRight={4}>
-            Don&apos;t have an account?
-        </Text>
-        <MyTouchable onPress={() => RootNavigator.navigate(RouteName.SignUp)}>
-            <Text color={Colors.primaryColor} fontWeight="bold">
-                Sign Up
-            </Text>
-        </MyTouchable>
-    </Box>
-));
-
-SignUpLink.displayName = 'SignUpLink';
+AppLogo.displayName = 'AppLogo';
 
 const SignInButton = React.memo<{ onPress: () => void; isLoading?: boolean }>(
     ({ onPress, isLoading }) => (
@@ -181,7 +115,7 @@ ErrorMessage.displayName = 'ErrorMessage';
 const Login = () => {
     const { control, handleSubmit } = useForm<LoginFormData>({
         defaultValues: {
-            email: '',
+            username: '',
             password: '',
         },
         resolver: zodResolver(loginSchema),
@@ -194,29 +128,29 @@ const Login = () => {
         handleSubmit(async (values: LoginFormData) => {
             try {
                 await signInMutation.mutateAsync({
-                    email: values.email,
+                    username: values.username,
                     password: values.password,
                 });
-                RootNavigator.replaceName(RouteName.Main);
+                RootNavigator.replaceName(RouteName.AccountManagement);
             } catch {
                 // Error is handled by the mutation's onError callback
             }
         })();
     }, [handleSubmit, signInMutation]);
 
-    const handleForgotPassword = React.useCallback(() => {}, []);
-
     const errorMessage = signInMutation.error?.message;
 
     return (
         <Box flex={1} safeArea backgroundColor="white">
             <ScrollView>
-                <Box flex={1} paddingHorizontal={24} paddingTop={40}>
+                <Box flex={1} paddingHorizontal={24} paddingTop={60}>
                     <VStack alignItems="center" marginBottom={40} space="md">
-                        <RNLogo />
-                        <AppInfoBadge />
+                        <AppLogo />
+                        <Text size="3xl" fontWeight="bold" color="#0f172a">
+                            Account Manager
+                        </Text>
                         <Text size="md" color="#64748b">
-                            Please sign in to your account
+                            Please sign in to continue
                         </Text>
                     </VStack>
 
@@ -225,10 +159,10 @@ const Login = () => {
 
                         <ControlledInput
                             control={control}
-                            name="email"
-                            placeholder="Email"
+                            name="username"
+                            placeholder="Username"
                             shouldUseFieldError={true}
-                            testID="email-input"
+                            testID="username-input"
                         />
 
                         <ControlledInput
@@ -240,16 +174,7 @@ const Login = () => {
                             testID="password-input"
                         />
 
-                        <Box alignItems="flex-end">
-                            <MyTouchable onPress={handleForgotPassword}>
-                                <Text color={Colors.primaryColor} fontWeight="bold">
-                                    Forgot Password?
-                                </Text>
-                            </MyTouchable>
-                        </Box>
-
                         <SignInButton onPress={handleLogin} isLoading={signInMutation.isPending} />
-                        <SignUpLink />
                     </VStack>
                 </Box>
             </ScrollView>
@@ -258,4 +183,3 @@ const Login = () => {
 };
 
 export default React.memo(Login);
-

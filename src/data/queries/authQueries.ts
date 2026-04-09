@@ -1,17 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { Logger } from '@/shared/helper';
+import httpClient from '@/data/services/httpClient/httpClient';
 
 import { authApi, type AuthCredentials } from '../api/authApi';
 
 const authQueries = {
     useSignIn: () => {
-        const queryClient = useQueryClient();
+        const setAuth = useAuthStore((state) => state.setAuth);
 
         return useMutation({
             mutationFn: (credentials: AuthCredentials) => authApi.signIn(credentials),
             onSuccess: (data) => {
-                queryClient.setQueryData(['auth', 'session'], data.session);
+                // Set JWT token on httpClient for subsequent requests
+                httpClient.setAccessToken(data.access_token);
+                setAuth(data.access_token, data.user);
             },
             onError: (error) => {
                 Logger.error('AuthQueries', 'Sign in failed', error.message);
@@ -19,36 +23,20 @@ const authQueries = {
         });
     },
 
-    useSignUp: () => {
-        return useMutation({
-            mutationFn: (credentials: AuthCredentials) => authApi.signUp(credentials),
-            onError: (error) => {
-                Logger.error('AuthQueries', 'Sign up failed', error.message);
-            },
-        });
-    },
-
     useSignOut: () => {
         const queryClient = useQueryClient();
+        const clearAuth = useAuthStore((state) => state.clearAuth);
 
         return useMutation({
             mutationFn: authApi.signOut,
             onSuccess: () => {
-                queryClient.setQueryData(['auth', 'session'], null);
+                httpClient.clearSession();
                 queryClient.clear();
+                clearAuth();
             },
             onError: (error) => {
                 Logger.error('AuthQueries', 'Sign out failed', error.message);
             },
-        });
-    },
-
-    useSession: () => {
-        return useQuery({
-            queryKey: ['auth', 'session'],
-            queryFn: authApi.getSession,
-            staleTime: 5 * 60 * 1000,
-            retry: false,
         });
     },
 };

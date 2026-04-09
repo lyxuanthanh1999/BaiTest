@@ -1,52 +1,39 @@
-import { supabase } from '../services/supabase';
+import httpClient from '../services/httpClient/httpClient';
+import ApiMethod from '../services/httpClient/apiMethod';
 
 export interface AuthCredentials {
-    email: string;
+    username: string;
     password: string;
 }
 
+export interface LoginResponse {
+    access_token: string;
+    user: {
+        id: number;
+        username: string;
+        email: string;
+        fullName: string;
+        role: string;
+    };
+}
+
 export const authApi = {
-    signIn: async ({ email, password }: AuthCredentials) => {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
+    signIn: async ({ username, password }: AuthCredentials): Promise<LoginResponse> => {
+        const response = await httpClient.request<LoginResponse>({
+            endpoint: '/api/auth/login',
+            method: ApiMethod.POST,
+            body: { username, password },
         });
 
-        if (error) {
-            throw error;
+        if (!response?.ok || !response.data) {
+            throw new Error('Login failed');
         }
 
-        return data;
-    },
-
-    signUp: async ({ email, password }: AuthCredentials) => {
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
-
-        if (error) {
-            throw error;
-        }
-
-        return data;
+        return response.data;
     },
 
     signOut: async () => {
-        const { error } = await supabase.auth.signOut();
-
-        if (error) {
-            throw error;
-        }
-    },
-
-    getSession: async () => {
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error) {
-            throw error;
-        }
-
-        return data.session;
+        // JWT is stateless, just clear client-side token
+        return;
     },
 };
